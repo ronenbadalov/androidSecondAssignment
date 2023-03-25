@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 
 import com.example.a23b_11345b_l01.Logic.GameManager;
@@ -19,25 +20,26 @@ public class MainActivity extends AppCompatActivity {
     private ShapeableImageView[] main_IMG_cars;
     private ShapeableImageView[][] main_IMG_obstacles;
     private GameManager gameManager;
+    private int obstacleProgressIntervalMS = 1000;
+    private Handler ObstacleProgressHandler;
+    private int tick = 0;
 
-    private int colSelectionInterval = 3000;
-    private int obstacleProgressInterval = 1000;
-    private Handler handler;
+    private Runnable ObstacleProgressRunnable;
+
+    private Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Define handler
-        handler = new Handler();
-
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        ObstacleProgressHandler = new Handler();
         findViews();
         gameManager = new GameManager(main_IMG_hearts.length);
         hideObstacles();
         refreshUI();
-
-        setNavButonsClickListeners();
+        setNavButtonsClickListeners();
+        obstacleProgress();
     }
 
     private void hideObstacles(){
@@ -49,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private void refreshUI() {
          if(gameManager.isLose()){
             // Loser Screen!
+            clearObstacleProgress();
             openScoreScreen("Game Over!");
-        } else {
+         } else {
 
              for (int i = 0; i < main_IMG_cars.length; i++)
                  main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
@@ -66,26 +69,69 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setNavButonsClickListeners() {
+    private void setNavButtonsClickListeners() {
         for (MaterialButton mb: main_nav_BTNS) {
             mb.setOnClickListener(v -> clicked(mb.getId()));
         }
     }
 
     private void clicked(int btnId) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         int currLane = gameManager.getCarCurrentLane();
         if(btnId == main_nav_BTNS[0].getId()){
-            if(currLane == 0) currLane = 2;
-            else currLane --;
+            currLane = (currLane + main_IMG_cars.length - 1) % main_IMG_cars.length;
         }else{
-            if(currLane == 2) currLane = 0;
-            else currLane ++;
+            currLane = ++currLane % main_IMG_cars.length;
         }
         gameManager.setCarCurrentLane(currLane);
         refreshUI();
     }
 
+    private void obstacleProgress() {
+        // TODO: this seems to not work this way
+        ObstacleProgressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                for (int colIndex = 0; colIndex < main_IMG_obstacles.length; colIndex++)
+                    for (int rowIndex = main_IMG_obstacles[colIndex].length - 1; rowIndex>=0;rowIndex--) {
+                        if(main_IMG_obstacles[colIndex][rowIndex].getVisibility() == View.VISIBLE) {
+                            // move obstacle
+                            main_IMG_obstacles[colIndex][rowIndex].setVisibility(View.INVISIBLE);
+                            if (rowIndex != main_IMG_obstacles[colIndex].length - 1) {
+                                main_IMG_obstacles[colIndex][rowIndex + 1].setVisibility(View.VISIBLE);
+                            }
+                            // if obstacle is on the last row, set it to be the dangerous col
+                            if(rowIndex + 1 == main_IMG_obstacles[colIndex].length - 1){
+                                gameManager.setDangerousCol(colIndex);
+                                gameManager.isCrashed(getApplicationContext(),v);
+                                refreshUI();
+                            }else{
+                                gameManager.setDangerousCol(-1);
+                            }
+                        }
+                    }
+
+                // after 2 seconds add a new obstacle
+                if(tick == 1){
+//                    obstacleProgress(0);
+                    tick = 0;
+                    int colIndex = getRandomNumber(0,main_IMG_obstacles.length);
+                    main_IMG_obstacles[colIndex][0].setVisibility(View.VISIBLE);
+                }else{
+                    tick++;
+//                    obstacleProgress(tick + 1);
+                }
+            }
+        };
+        ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
+    }
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    private void clearObstacleProgress() {
+        ObstacleProgressHandler.removeCallbacks(ObstacleProgressRunnable);
+    }
 
     private void findViews() {
         main_nav_BTNS = new MaterialButton[]{
