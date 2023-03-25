@@ -5,90 +5,122 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 
 import com.example.a23b_11345b_l01.Logic.GameManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textview.MaterialTextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private MaterialTextView main_LBL_score;
-    private MaterialButton[] main_BTN_options;
+    private MaterialButton[] main_nav_BTNS;
     private ShapeableImageView[] main_IMG_hearts;
-    private ShapeableImageView main_IMG_flag;
-
+    private ShapeableImageView[] main_IMG_cars;
+    private ShapeableImageView[][] main_IMG_obstacles;
     private GameManager gameManager;
+
+    private int colSelectionInterval = 3000;
+    private int obstacleProgressInterval = 1000;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Define handler
+        handler = new Handler();
+
         findViews();
         gameManager = new GameManager(main_IMG_hearts.length);
+        hideObstacles();
         refreshUI();
 
-        setAnswersClickListeners();
+        setNavButonsClickListeners();
+    }
+
+    private void hideObstacles(){
+        for (int i = 0; i < main_IMG_obstacles.length; i++)
+            for (int j = 0; j<main_IMG_obstacles[i].length;j++)
+                main_IMG_obstacles[i][j].setVisibility(View.INVISIBLE);
     }
 
     private void refreshUI() {
-        if (gameManager.isGameEnded()) {
-            // Winner Screen!
-            openScoreScreen("Winner",gameManager.getScore());
-        } else if(gameManager.isLose()){
+         if(gameManager.isLose()){
             // Loser Screen!
-            openScoreScreen("Game Over!",gameManager.getScore());
+            openScoreScreen("Game Over!");
         } else {
-            main_IMG_flag.setImageResource(gameManager.getCurrentQuestion().getImageResource());
-            main_LBL_score.setText("" + gameManager.getScore());
-            List<String> answers = Arrays.asList(gameManager.getCurrentQuestion().getAnswers());
-            Collections.shuffle(answers);
-            for (int i = 0; i < answers.size(); i++)
-                main_BTN_options[i].setText(answers.get(i));
-            if (gameManager.getWrong() != 0)
-                main_IMG_hearts[main_IMG_hearts.length - gameManager.getWrong()].setVisibility(View.INVISIBLE);
+
+             for (int i = 0; i < main_IMG_cars.length; i++)
+                 main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
+            if (gameManager.getCrash() != 0)
+                main_IMG_hearts[main_IMG_hearts.length - gameManager.getCrash()].setVisibility(View.INVISIBLE);
         }
     }
 
-    private void openScoreScreen(String status, int score) {
+    private void openScoreScreen(String status) {
         Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra(ScoreActivity.KEY_SCORE,score);
         intent.putExtra(ScoreActivity.KEY_STATUS,status);
         startActivity(intent);
         finish();
     }
 
-    private void setAnswersClickListeners() {
-        for (MaterialButton mb: main_BTN_options) {
-            mb.setOnClickListener(v -> clicked(mb.getText().toString()));
+    private void setNavButonsClickListeners() {
+        for (MaterialButton mb: main_nav_BTNS) {
+            mb.setOnClickListener(v -> clicked(mb.getId()));
         }
     }
 
-    private void clicked(String selectedAnswer) {
+    private void clicked(int btnId) {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        gameManager.checkAnswer(getApplicationContext(), v, selectedAnswer);
+        int currLane = gameManager.getCarCurrentLane();
+        if(btnId == main_nav_BTNS[0].getId()){
+            if(currLane == 0) currLane = 2;
+            else currLane --;
+        }else{
+            if(currLane == 2) currLane = 0;
+            else currLane ++;
+        }
+        gameManager.setCarCurrentLane(currLane);
         refreshUI();
     }
 
 
     private void findViews() {
-        main_LBL_score = findViewById(R.id.main_LBL_score);
-        main_BTN_options = new MaterialButton[]{
-                findViewById(R.id.main_BTN_option1),
-                findViewById(R.id.main_BTN_option2),
-                findViewById(R.id.main_BTN_option3),
-                findViewById(R.id.main_BTN_option4)};
+        main_nav_BTNS = new MaterialButton[]{
+            findViewById(R.id.main_nav_BTNS_left),
+            findViewById(R.id.main_nav_BTNS_right)};
         main_IMG_hearts = new ShapeableImageView[]{
-                findViewById(R.id.main_IMG_heart1),
-                findViewById(R.id.main_IMG_heart2),
-                findViewById(R.id.main_IMG_heart3)};
-        main_IMG_flag = findViewById(R.id.main_IMG_flag);
+            findViewById(R.id.main_IMG_heart1),
+            findViewById(R.id.main_IMG_heart2),
+            findViewById(R.id.main_IMG_heart3)};
+
+        main_IMG_cars = new ShapeableImageView[]{
+            findViewById(R.id.main_car01),
+            findViewById(R.id.main_car02),
+            findViewById(R.id.main_car03)};
+
+        main_IMG_obstacles = new ShapeableImageView[][]{
+            {
+                findViewById(R.id.main_row0_col0_obstacle),
+                findViewById(R.id.main_row1_col0_obstacle),
+                findViewById(R.id.main_row2_col0_obstacle),
+                findViewById(R.id.main_row3_col0_obstacle),
+            },
+            {
+                findViewById(R.id.main_row0_col1_obstacle),
+                findViewById(R.id.main_row1_col1_obstacle),
+                findViewById(R.id.main_row2_col1_obstacle),
+                findViewById(R.id.main_row3_col1_obstacle),
+            },
+            {
+                findViewById(R.id.main_row0_col2_obstacle),
+                findViewById(R.id.main_row1_col2_obstacle),
+                findViewById(R.id.main_row2_col2_obstacle),
+                findViewById(R.id.main_row3_col2_obstacle),
+            },
+        };
+
     }
 }
