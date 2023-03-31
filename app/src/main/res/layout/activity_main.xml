@@ -192,33 +192,24 @@
             app:srcCompat="@drawable/car" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/main_LAYOUT_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp">
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/main_nav_BTNS_left"
             android:layout_width="70dp"
             android:layout_height="80dp"
             app:icon="@drawable/left_arrow"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             app:shapeAppearanceOverlay="@style/roundButton"
-
+            android:layout_margin="16dp"
             />
-        <View
-            android:layout_width="240dp"
-            android:layout_height="0dp" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/main_nav_BTNS_right"
             android:layout_width="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_height="80dp"
             app:icon="@drawable/right_arrow"
             app:shapeAppearanceOverlay="@style/roundButton"
+            android:layout_margin="16dp"
             />
-
-
-    </LinearLayout>
 </RelativeLayout>

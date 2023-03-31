@@ -28,6 +28,9 @@ public class GameManager {
         return life == crash;
     }
 
+    public void resetGame() {
+        crash = 0;
+    }
     public int getCarCurrentLane() {
         return carCurrentLane;
     }
@@ -42,7 +45,11 @@ public class GameManager {
     public void isCrashed(Context context, Vibrator v) {
         if (dangerousCol == carCurrentLane) { //Correct answer
             crash++;
-            Toast.makeText(context, String.format("🚨 Carefull! you have only %d lives left.", crash - life), Toast.LENGTH_SHORT).show();
+            if(crash < life){
+                Toast.makeText(context, String.format("🚨 Carefull! you have only %d lives left.", life - crash), Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context, String.format("YOU LOSE! 👎"), Toast.LENGTH_SHORT).show();
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {

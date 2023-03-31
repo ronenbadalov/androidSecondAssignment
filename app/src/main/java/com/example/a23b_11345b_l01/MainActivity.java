@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         hideObstacles();
         refreshUI();
         setNavButtonsClickListeners();
+        initRunnable();
         obstacleProgress();
     }
 
@@ -50,23 +51,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshUI() {
          if(gameManager.isLose()){
-            // Loser Screen!
-            clearObstacleProgress();
-            openScoreScreen("Game Over!");
-         } else {
-
+//            clearObstacleProgress();
+             gameManager.resetGame();
+             for (int i = 0; i < main_IMG_hearts.length; i++)
+                 main_IMG_hearts[i].setVisibility(View.VISIBLE);
+         }
              for (int i = 0; i < main_IMG_cars.length; i++)
                  main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
-            if (gameManager.getCrash() != 0)
-                main_IMG_hearts[main_IMG_hearts.length - gameManager.getCrash()].setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void openScoreScreen(String status) {
-        Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra(ScoreActivity.KEY_STATUS,status);
-        startActivity(intent);
-        finish();
+        gameManager.isCrashed(getApplicationContext(),v);
+        if (gameManager.getCrash() != 0)
+             main_IMG_hearts[main_IMG_hearts.length  - gameManager.getCrash()].setVisibility(View.INVISIBLE);
     }
 
     private void setNavButtonsClickListeners() {
@@ -86,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
         refreshUI();
     }
 
-    private void obstacleProgress() {
-        // TODO: this seems to not work this way
+    private void initRunnable(){
         ObstacleProgressRunnable = new Runnable() {
             @Override
             public void run() {
@@ -102,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                             // if obstacle is on the last row, set it to be the dangerous col
                             if(rowIndex + 1 == main_IMG_obstacles[colIndex].length - 1){
                                 gameManager.setDangerousCol(colIndex);
-                                gameManager.isCrashed(getApplicationContext(),v);
                                 refreshUI();
                             }else{
                                 gameManager.setDangerousCol(-1);
@@ -112,16 +104,18 @@ public class MainActivity extends AppCompatActivity {
 
                 // after 2 seconds add a new obstacle
                 if(tick == 1){
-//                    obstacleProgress(0);
                     tick = 0;
                     int colIndex = getRandomNumber(0,main_IMG_obstacles.length);
                     main_IMG_obstacles[colIndex][0].setVisibility(View.VISIBLE);
                 }else{
                     tick++;
-//                    obstacleProgress(tick + 1);
                 }
+            ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
             }
         };
+    }
+
+    private void obstacleProgress() {
         ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
     }
 
