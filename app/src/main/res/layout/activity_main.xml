@@ -7,6 +7,11 @@
     android:background="@color/blue_200"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/main_IMG_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:layout_width="140dp"
         android:layout_height="40dp"
@@ -51,21 +56,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row0_col1_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row0_col2_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,21 +87,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row1_col1_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row1_col2_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,52 +118,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row2_col1_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_row2_col2_obstacle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/main_row3"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/main_row2"
-        >
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/main_row3_col0_obstacle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/main_row3_col1_obstacle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/main_row3_col2_obstacle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/boulder" />
+            app:srcCompat="@drawable/asteroid" />
     </LinearLayout>
 
     <LinearLayout
@@ -175,41 +149,72 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/car" />
+            app:srcCompat="@drawable/spaceship" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_car02"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/car" />
+            app:srcCompat="@drawable/spaceship" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_car03"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/car" />
+            app:srcCompat="@drawable/spaceship" />
     </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/main_nav_BTNS_left"
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            app:icon="@drawable/left_arrow"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            app:shapeAppearanceOverlay="@style/roundButton"
-            android:layout_margin="16dp"
-            />
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/main_nav_BTNS_right"
-            android:layout_width="70dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_height="80dp"
-            app:icon="@drawable/right_arrow"
-            app:shapeAppearanceOverlay="@style/roundButton"
-            android:layout_margin="16dp"
-            />
+    <LinearLayout
+        android:id="@+id/main_row3"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/main_row2"
+        >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_row3_col0_obstacle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/asteroid" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_row3_col1_obstacle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/asteroid" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_row3_col2_obstacle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/asteroid" />
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/main_nav_BTNS_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/red_300"
+        app:icon="@drawable/left_arrow"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/main_nav_BTNS_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/red_300"
+        app:icon="@drawable/right_arrow"/>
 </RelativeLayout>

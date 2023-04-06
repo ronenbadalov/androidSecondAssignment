@@ -1,6 +1,7 @@
 package com.example.a23b_11345b_l01;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,13 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-
+import com.bumptech.glide.Glide;
 import com.example.a23b_11345b_l01.Logic.GameManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
+    private AppCompatImageView main_IMG_background;
     private MaterialButton[] main_nav_BTNS;
     private ShapeableImageView[] main_IMG_hearts;
     private ShapeableImageView[] main_IMG_cars;
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         ObstacleProgressHandler = new Handler();
         findViews();
+
+        Glide
+                .with(this)
+                .load("https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1178&q=80")
+//                .load(R.drawable.space_bg)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(main_IMG_background);
+
         gameManager = new GameManager(main_IMG_hearts.length);
         hideObstacles();
         refreshUI();
@@ -128,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findViews() {
+        main_IMG_background = findViewById(R.id.main_IMG_background);
         main_nav_BTNS = new MaterialButton[]{
             findViewById(R.id.main_nav_BTNS_left),
             findViewById(R.id.main_nav_BTNS_right)};
