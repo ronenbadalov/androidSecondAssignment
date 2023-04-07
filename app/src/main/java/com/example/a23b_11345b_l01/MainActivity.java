@@ -16,7 +16,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
-    private AppCompatImageView main_IMG_background;
     private MaterialButton[] main_nav_BTNS;
     private ShapeableImageView[] main_IMG_hearts;
     private ShapeableImageView[] main_IMG_cars;
@@ -37,14 +36,6 @@ public class MainActivity extends AppCompatActivity {
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         ObstacleProgressHandler = new Handler();
         findViews();
-
-        Glide
-                .with(this)
-                .load("https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1178&q=80")
-//                .load(R.drawable.space_bg)
-                .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(main_IMG_background);
 
         gameManager = new GameManager(main_IMG_hearts.length);
         hideObstacles();
@@ -67,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
              for (int i = 0; i < main_IMG_hearts.length; i++)
                  main_IMG_hearts[i].setVisibility(View.VISIBLE);
          }
-             for (int i = 0; i < main_IMG_cars.length; i++)
-                 main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
+        for (int i = 0; i < main_IMG_cars.length; i++)
+            main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
         gameManager.isCrashed(getApplicationContext(),v);
         if (gameManager.getCrash() != 0)
              main_IMG_hearts[main_IMG_hearts.length  - gameManager.getCrash()].setVisibility(View.INVISIBLE);
@@ -107,11 +98,13 @@ public class MainActivity extends AppCompatActivity {
                             if(rowIndex + 1 == main_IMG_obstacles[colIndex].length - 1){
                                 gameManager.setDangerousCol(colIndex);
                                 refreshUI();
-                            }else{
+                            }
+                            else{
                                 gameManager.setDangerousCol(-1);
                             }
                         }
                     }
+
 
                 // after 2 seconds add a new obstacle
                 if(tick == 1){
@@ -139,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        main_IMG_background = findViewById(R.id.main_IMG_background);
         main_nav_BTNS = new MaterialButton[]{
             findViewById(R.id.main_nav_BTNS_left),
             findViewById(R.id.main_nav_BTNS_right)};
