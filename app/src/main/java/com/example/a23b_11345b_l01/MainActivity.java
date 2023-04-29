@@ -52,17 +52,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshUI() {
-         if(gameManager.isLose()){
+        if(gameManager.isLose()){
 //            clearObstacleProgress();
-             gameManager.resetGame();
-             for (int i = 0; i < main_IMG_hearts.length; i++)
-                 main_IMG_hearts[i].setVisibility(View.VISIBLE);
-         }
+            gameManager.resetGame();
+            for (int i = 0; i < main_IMG_hearts.length; i++)
+                main_IMG_hearts[i].setVisibility(View.VISIBLE);
+        }
         for (int i = 0; i < main_IMG_cars.length; i++)
             main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
         gameManager.isCrashed(getApplicationContext(),v);
         if (gameManager.getCrash() != 0)
-             main_IMG_hearts[main_IMG_hearts.length  - gameManager.getCrash()].setVisibility(View.INVISIBLE);
+            main_IMG_hearts[gameManager.getCrash() -1].setVisibility(View.INVISIBLE);
     }
 
     private void setNavButtonsClickListeners() {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     tick++;
                 }
-            ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
+                ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
             }
         };
     }
@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         main_nav_BTNS = new MaterialButton[]{
             findViewById(R.id.main_nav_BTNS_left),
             findViewById(R.id.main_nav_BTNS_right)};
+
         main_IMG_hearts = new ShapeableImageView[]{
             findViewById(R.id.main_IMG_heart1),
             findViewById(R.id.main_IMG_heart2),
@@ -143,7 +144,10 @@ public class MainActivity extends AppCompatActivity {
         main_IMG_cars = new ShapeableImageView[]{
             findViewById(R.id.main_car01),
             findViewById(R.id.main_car02),
-            findViewById(R.id.main_car03)};
+            findViewById(R.id.main_car03),
+            findViewById(R.id.main_car04),
+            findViewById(R.id.main_car05),
+        };
 
         main_IMG_obstacles = new ShapeableImageView[][]{
             {
@@ -163,6 +167,18 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_row1_col2_obstacle),
                 findViewById(R.id.main_row2_col2_obstacle),
                 findViewById(R.id.main_row3_col2_obstacle),
+            },
+            {
+                findViewById(R.id.main_row0_col3_obstacle),
+                findViewById(R.id.main_row1_col3_obstacle),
+                findViewById(R.id.main_row2_col3_obstacle),
+                findViewById(R.id.main_row3_col3_obstacle),
+            },
+            {
+                findViewById(R.id.main_row0_col4_obstacle),
+                findViewById(R.id.main_row1_col4_obstacle),
+                findViewById(R.id.main_row2_col4_obstacle),
+                findViewById(R.id.main_row3_col4_obstacle),
             },
         };
 
