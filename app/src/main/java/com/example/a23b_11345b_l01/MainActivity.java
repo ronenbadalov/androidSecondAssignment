@@ -19,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton[] main_nav_BTNS;
     private ShapeableImageView[] main_IMG_hearts;
     private ShapeableImageView[] main_IMG_cars;
+
     private ShapeableImageView[][] main_IMG_obstacles;
+
+    private ShapeableImageView[][] main_IMG_coins;
     private GameManager gameManager;
     private int obstacleProgressIntervalMS = 1000;
     private Handler ObstacleProgressHandler;
@@ -179,6 +182,39 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_row1_col4_obstacle),
                 findViewById(R.id.main_row2_col4_obstacle),
                 findViewById(R.id.main_row3_col4_obstacle),
+            },
+        };
+
+        main_IMG_coins = new ShapeableImageView[][]{
+            {
+                findViewById(R.id.main_row0_col0_coins),
+                findViewById(R.id.main_row1_col0_coins),
+                findViewById(R.id.main_row2_col0_coins),
+                findViewById(R.id.main_row3_col0_coins),
+            },
+            {
+                findViewById(R.id.main_row0_col1_coins),
+                findViewById(R.id.main_row1_col1_coins),
+                findViewById(R.id.main_row2_col1_coins),
+                findViewById(R.id.main_row3_col1_coins),
+            },
+            {
+                findViewById(R.id.main_row0_col2_coins),
+                findViewById(R.id.main_row1_col2_coins),
+                findViewById(R.id.main_row2_col2_coins),
+                findViewById(R.id.main_row3_col2_coins),
+            },
+            {
+                findViewById(R.id.main_row0_col3_coins),
+                findViewById(R.id.main_row1_col3_coins),
+                findViewById(R.id.main_row2_col3_coins),
+                findViewById(R.id.main_row3_col3_coins),
+            },
+            {
+                findViewById(R.id.main_row0_col4_coins),
+                findViewById(R.id.main_row1_col4_coins),
+                findViewById(R.id.main_row2_col4_coins),
+                findViewById(R.id.main_row3_col4_coins),
             },
         };
 
