@@ -455,9 +455,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/red_300"
-        app:icon="@drawable/left_arrow"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/purple_200"
+        app:icon="@drawable/left_arrow" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/main_nav_BTNS_right"
@@ -466,6 +469,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/red_300"
+        android:backgroundTint="@color/purple_200"
         app:icon="@drawable/right_arrow"/>
 </RelativeLayout>

@@ -61,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshUI() {
         if(gameManager.isLose()){
-//            clearObstacleProgress();
-            gameManager.resetGame();
-            for (int i = 0; i < main_IMG_hearts.length; i++)
-                main_IMG_hearts[i].setVisibility(View.VISIBLE);
+            clearObstacleProgress();
         }
         int[][] currBoardState = gameManager.getBoardState();
         for(int i = 0; i < gameManager.getRows();i++) {
@@ -150,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
             }
         };
+    }
+
+    protected void onPause() {
+        super.onPause();
+        clearObstacleProgress();
     }
 
     private void obstacleProgress() {
