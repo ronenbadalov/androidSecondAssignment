@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshUI() {
         if(gameManager.isLose()){
             clearObstacleProgress();
+            openScoreBoard();
         }
         int[][] currBoardState = gameManager.getBoardState();
         for(int i = 0; i < gameManager.getRows();i++) {
@@ -80,8 +81,16 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < main_IMG_cars.length; i++)
             main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
-        if(gameManager.isCrashed(getApplicationContext(),v)) hitSound.start();
-        if(gameManager.isRewarded(getApplicationContext(),v)) coinSound.start();
+        if(gameManager.isCrashed(getApplicationContext(),v)) {
+            if(coinSound.isPlaying()) coinSound.stop();
+            if(hitSound.isPlaying()) hitSound.stop();
+            hitSound.start();
+        }
+        if(gameManager.isRewarded(getApplicationContext(),v)) {
+            if(coinSound.isPlaying()) coinSound.stop();
+            if(hitSound.isPlaying()) hitSound.stop();
+            coinSound.start();
+        }
         if (gameManager.getCrash() != 0)
             main_IMG_hearts[gameManager.getCrash() -1].setVisibility(View.INVISIBLE);
         main_odometer_text.setText(String.format("%05d", gameManager.getScore()));
@@ -173,6 +182,15 @@ public class MainActivity extends AppCompatActivity {
     private void clearObstacleProgress() {
         ObstacleProgressHandler.removeCallbacks(ObstacleProgressRunnable);
     }
+
+    private void openScoreBoard() {
+        Intent intent = new Intent(this, ScoreActivity.class);
+//        intent.putExtra(MainActivity.KEY_NORMAL_SPEED,isNormalSpeed);
+//        intent.putExtra(MainActivity.KEY_IS_SENSOR,isSensorMode);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void findViews() {
 
