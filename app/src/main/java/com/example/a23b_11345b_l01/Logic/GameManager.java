@@ -66,7 +66,7 @@ public class GameManager {
     public void setCarCurrentLane(int newLane){
         carCurrentLane = newLane;
     }
-    public void isCrashed(Context context, Vibrator v) {
+    public boolean isCrashed(Context context, Vibrator v) {
         if (dangerousCol == carCurrentLane) { //Correct answer
             crash++;
             if(crash < life){
@@ -81,9 +81,10 @@ public class GameManager {
                 v.vibrate(500);
             }
         }
+        return dangerousCol == carCurrentLane;
     }
 
-    public void isRewarded(Context context, Vibrator v) {
+    public boolean isRewarded(Context context, Vibrator v) {
         if (coinCol == carCurrentLane) { //Correct answer
                 Toast.makeText(context, String.format("You got some coins! 🤑 +5 points", life - crash), Toast.LENGTH_SHORT).show();
                 score += 5;
@@ -94,6 +95,7 @@ public class GameManager {
                 v.vibrate(500);
             }
         }
+        return coinCol == carCurrentLane;
     }
 
     public int getScore(){

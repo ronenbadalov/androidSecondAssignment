@@ -43,14 +43,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/menu_speed_text"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/retro_gaming"
             android:letterSpacing="0.1"
             android:maxLines="2"
             android:minLines="2"
             android:text="SPEED"
-            android:textAlignment="center"
+            android:layout_marginStart="10dp"
             android:textColor="@color/white"
             android:textFontWeight="700"
             android:textSize="30sp" />
@@ -67,6 +67,45 @@
             android:fontFamily="@font/retro_gaming"
             android:letterSpacing="0.3"
             android:text="NORMAL"
+            android:textFontWeight="700"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_sensor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/menu_speed_layout"
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/menu_sensor_text"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/retro_gaming"
+            android:layout_marginStart="10dp"
+            android:letterSpacing="0.1"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="SENSOR"
+            android:textColor="@color/white"
+            android:textFontWeight="700"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/menu_BTN_sensor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/retro_gaming"
+            android:letterSpacing="0.3"
+            android:text="OFF"
             android:textFontWeight="700"
             android:textSize="20sp" />
     </LinearLayout>

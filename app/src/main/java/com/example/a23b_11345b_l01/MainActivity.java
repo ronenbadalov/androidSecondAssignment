@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -20,25 +21,28 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton[] main_nav_BTNS;
     private ShapeableImageView[] main_IMG_hearts;
     private ShapeableImageView[] main_IMG_cars;
-
     private ShapeableImageView[][] main_IMG_obstacles;
-
     private ShapeableImageView[][] main_IMG_coins;
-
     private MaterialTextView main_odometer_text;
     private GameManager gameManager;
-    private int obstacleProgressIntervalMS = 1000;
+    private int obstacleProgressIntervalMS;
     private Handler ObstacleProgressHandler;
     private int tick = 0;
-
     private Runnable ObstacleProgressRunnable;
-
     private Vibrator v;
+    private MediaPlayer hitSound;
+    private MediaPlayer coinSound;
+    public static final String KEY_NORMAL_SPEED = "KEY_NORMAL_SPEED";
+    public static final String KEY_IS_SENSOR = "KEY_IS_SENSOR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent previousIntent = getIntent();
+        obstacleProgressIntervalMS = previousIntent.getBooleanExtra(KEY_NORMAL_SPEED,true) ? 1000 : 500;
+        previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
+
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         ObstacleProgressHandler = new Handler();
         findViews();
@@ -49,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         setNavButtonsClickListeners();
         initRunnable();
         obstacleProgress();
+        hitSound = MediaPlayer.create(this,R.raw.oof);
+        hitSound.setVolume(1.0f,1.0f);
+        coinSound = MediaPlayer.create(this,R.raw.wow);
+        coinSound.setVolume(1.0f,1.0f);
     }
 
     private void hideObstaclesAndCoins(){
@@ -72,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < main_IMG_cars.length; i++)
             main_IMG_cars[i].setVisibility(gameManager.getCarCurrentLane() == i ?View.VISIBLE :  View.INVISIBLE);
-        gameManager.isCrashed(getApplicationContext(),v);
-        gameManager.isRewarded(getApplicationContext(),v);
+        if(gameManager.isCrashed(getApplicationContext(),v)) hitSound.start();
+        if(gameManager.isRewarded(getApplicationContext(),v)) coinSound.start();
         if (gameManager.getCrash() != 0)
             main_IMG_hearts[gameManager.getCrash() -1].setVisibility(View.INVISIBLE);
         main_odometer_text.setText(String.format("%05d", gameManager.getScore()));

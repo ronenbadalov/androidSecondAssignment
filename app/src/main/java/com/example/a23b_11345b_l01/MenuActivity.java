@@ -17,7 +17,9 @@ import com.google.android.material.textview.MaterialTextView;
 public class MenuActivity extends AppCompatActivity {
     private MaterialButton menu_play_BTN;
     private MaterialButton menu_speed_BTN;
+    private MaterialButton menu_sensor_BTN;
     private boolean isNormalSpeed;
+    private boolean isSensorMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +28,19 @@ public class MenuActivity extends AppCompatActivity {
         findViews();
         setButtonsClickListeners();
         isNormalSpeed=true;
+        isSensorMode=false;
     }
 
     private void setButtonsClickListeners() {
         menu_play_BTN.setOnClickListener(v ->openMainActivity());
         menu_speed_BTN.setOnClickListener(v ->toggleSpeed());
+        menu_sensor_BTN.setOnClickListener(v ->toggleSensors());
     }
 
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-//        intent.putExtra(MainActivity.KEY_SCORE,score);
-//        intent.putExtra(MainActivity.KEY_STATUS,status);
+        intent.putExtra(MainActivity.KEY_NORMAL_SPEED,isNormalSpeed);
+        intent.putExtra(MainActivity.KEY_IS_SENSOR,isSensorMode);
         startActivity(intent);
         finish();
     }
@@ -49,8 +53,18 @@ public class MenuActivity extends AppCompatActivity {
         isNormalSpeed = !isNormalSpeed;
     }
 
+    private void toggleSensors(){
+        if(isSensorMode)
+            menu_sensor_BTN.setText("OFF");
+        else
+            menu_sensor_BTN.setText("ON");
+        isSensorMode = !isSensorMode;
+    }
+
+
     private void findViews() {
         menu_play_BTN = findViewById(R.id.menu_BTN_play);
         menu_speed_BTN = findViewById(R.id.menu_BTN_speed);
+        menu_sensor_BTN = findViewById(R.id.menu_BTN_sensor);
     }
 }
