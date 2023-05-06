@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
-
     tools:context=".Fragments.ListFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_LST_scores"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        tools:listitem="@layout/score_item" />
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/list_ET_name"
         android:layout_width="wrap_content"

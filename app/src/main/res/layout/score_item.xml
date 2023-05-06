@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="4dp"
+    android:elevation="8dp"
+    app:cardElevation="8dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_300">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/score_item_place"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/retro_gaming"
+            android:layout_marginStart="6dp"
+            android:letterSpacing="0.1"
+            android:text="1)"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textFontWeight="700"
+            android:textSize="30sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/score_item_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/score_item_place"
+            android:text="800 Points"
+            android:fontFamily="@font/retro_gaming"
+            android:letterSpacing="0.1"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -185,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openScoreBoard() {
         Intent intent = new Intent(this, ScoreActivity.class);
-//        intent.putExtra(MainActivity.KEY_NORMAL_SPEED,isNormalSpeed);
-//        intent.putExtra(MainActivity.KEY_IS_SENSOR,isSensorMode);
+        intent.putExtra(ScoreActivity.KEY_SCORE,gameManager.getScore());
         startActivity(intent);
         finish();
     }
