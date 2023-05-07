@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23b_11345b_l01.Adapters.ScoreAdapter;
-import com.example.a23b_11345b_l01.Interfaces.CallBack_SendClick;
 import com.example.a23b_11345b_l01.Interfaces.ScoreCallback;
+import com.example.a23b_11345b_l01.Interfaces.SendMapData;
 import com.example.a23b_11345b_l01.Models.Score;
 import com.example.a23b_11345b_l01.Models.ScoreList;
 import com.example.a23b_11345b_l01.R;
@@ -29,36 +29,40 @@ import java.util.List;
 
 public class ListFragment extends Fragment {
     private RecyclerView list_LST_scores;
-    private AppCompatEditText list_ET_name;
-    private MaterialButton list_BTN_send;
 
-    private CallBack_SendClick callBack_sendClick;
-
+    private ScoreAdapter scoreAdapter;
     public static final String KEY_SCORE = "KEY_SCORE";
+    public static final String KEY_LOCATION = "KEY_LOCATION";
 
-    public void setCallBack_sendClick(CallBack_SendClick callBack_sendClick) {
-        this.callBack_sendClick = callBack_sendClick;
+    private ArrayList<Score> scores;
+
+    private SendMapData sendMapData;
+
+
+    public ListFragment(SendMapData sendMapData){
+        this.sendMapData = sendMapData;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        Log.d("test","in list");
         findViews(view);
         initViews(view);
-        list_BTN_send.setOnClickListener(v -> sendClicked());
         return view;
     }
 
     private void initViews(View view) {
         int userScore = getArguments().getInt(KEY_SCORE);
+        double[] lanLat = getArguments().getDoubleArray(KEY_LOCATION);
+
         Score userScoreItem = new Score();
         userScoreItem.setScore(userScore);
-        userScoreItem.setLan(1);
-        userScoreItem.setLat(2);
+        userScoreItem.setLat(lanLat[0]);
+        userScoreItem.setLan(lanLat[1]);
 
         String fromSP =  MySP3.getInstance().getString("score-list","");
-        Log.d("From SP", fromSP);
         ScoreList scorelistFromJson;
         if(fromSP == ""){
             scorelistFromJson = new ScoreList();
@@ -79,36 +83,26 @@ public class ListFragment extends Fragment {
 
         Collections.sort(scorelistFromJson.getScores(), comparator);
         ArrayList<Score> firstTenScores = new ArrayList<Score>(scorelistFromJson.getScores().subList(0, Math.min(scorelistFromJson.getScores().size(), 10)));
+        this.scores = firstTenScores;
+        scoreAdapter = new ScoreAdapter(getActivity(),scores,clickScoreItemCallback);
         String scoreListJson = new Gson().toJson(scorelistFromJson);
         MySP3.getInstance().putString("score-list", scoreListJson);
         Log.d("From JSON", scoreListJson.toString());
-        ScoreAdapter scoreAdapter = new ScoreAdapter(getActivity(), scorelistFromJson.getScores());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         list_LST_scores.setLayoutManager(linearLayoutManager);
         list_LST_scores.setAdapter(scoreAdapter);
-        scoreAdapter.setScoreCallback(new ScoreCallback() {
-//            @Override
-//            public void favoriteClicked(Score movie, int position) {
-//                movie.setFavorite(!movie.isFavorite());
-//                main_LST_movies.getAdapter().notifyItemChanged(position);
-//            }
-//
-//            @Override
-//            public void itemClicked(Movie movie, int position) {
-//                Toast.makeText(MainActivity.this, "" + movie.getTitle(), Toast.LENGTH_SHORT).show();
-//            }
-        });
     }
 
-    private void sendClicked() {
-        if (callBack_sendClick != null)
-            callBack_sendClick.userNameChosen(list_ET_name.getText().toString());
-    }
+    ScoreCallback clickScoreItemCallback = new ScoreCallback() {
+
+        @Override
+        public void onScoreClick(double lan, double lat) {
+            sendMapData.sendLocation(lan,lat);
+        }
+    };
 
     private void findViews(View view) {
         list_LST_scores = view.findViewById(R.id.list_LST_scores);
-        list_ET_name = view.findViewById(R.id.list_ET_name);
-        list_BTN_send = view.findViewById(R.id.list_BTN_send);
     }
 }

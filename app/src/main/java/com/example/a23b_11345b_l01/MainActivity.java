@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,8 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator v;
     private MediaPlayer hitSound;
     private MediaPlayer coinSound;
+    private Location currentLocation;
     public static final String KEY_NORMAL_SPEED = "KEY_NORMAL_SPEED";
     public static final String KEY_IS_SENSOR = "KEY_IS_SENSOR";
+    public static final String KEY_LOCATION = "KEY_LOCATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Intent previousIntent = getIntent();
         obstacleProgressIntervalMS = previousIntent.getBooleanExtra(KEY_NORMAL_SPEED,true) ? 1000 : 500;
         previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
+        currentLocation = previousIntent.getParcelableExtra(KEY_LOCATION);
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         ObstacleProgressHandler = new Handler();
@@ -186,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
     private void openScoreBoard() {
         Intent intent = new Intent(this, ScoreActivity.class);
         intent.putExtra(ScoreActivity.KEY_SCORE,gameManager.getScore());
+        intent.putExtra(ScoreActivity.KEY_LOCATION,currentLocation);
+
         startActivity(intent);
         finish();
     }

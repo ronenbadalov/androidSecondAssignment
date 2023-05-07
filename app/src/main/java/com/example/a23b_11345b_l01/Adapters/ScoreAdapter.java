@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,15 +21,11 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHol
 
 private Context context;
 private ArrayList<Score> scores;
-
 private ScoreCallback scoreCallback;
 
-public ScoreAdapter(Context context, ArrayList<Score> movies) {
+public ScoreAdapter(Context context, ArrayList<Score> scores,ScoreCallback scoreCallback) {
         this.context = context;
-        this.scores = movies;
-        }
-
-public void setScoreCallback(ScoreCallback scoreCallback) {
+        this.scores = scores;
         this.scoreCallback = scoreCallback;
         }
 
@@ -46,6 +43,9 @@ public void onBindViewHolder(@NonNull ScoreViewHolder holder, int position) {
         Score score = getItem(position);
         holder.score_item_place.setText((position + 1) + ")");
         holder.score_item_score.setText(score.getScore() + " Points");
+        holder.score_item_layout.setOnClickListener(v -> {
+            scoreCallback.onScoreClick(score.getLan(), score.getLat());
+        });
         }
 
 @Override
@@ -60,14 +60,13 @@ private Score getItem(int position) {
 public class ScoreViewHolder extends RecyclerView.ViewHolder {
     private MaterialTextView score_item_score;
     private MaterialTextView score_item_place;
+    private RelativeLayout score_item_layout;
 
     public ScoreViewHolder(@NonNull View itemView) {
         super(itemView);
         score_item_place = itemView.findViewById(R.id.score_item_place);
         score_item_score = itemView.findViewById(R.id.score_item_score);
-//        itemView.setOnClickListener(v -> {
-//
-//        });
+        score_item_layout = itemView.findViewById(R.id.score_item_layout);
     }
 }
 }

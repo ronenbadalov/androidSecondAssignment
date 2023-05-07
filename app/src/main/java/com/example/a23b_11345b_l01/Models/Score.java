@@ -2,8 +2,8 @@ package com.example.a23b_11345b_l01.Models;
 
 public class Score {
     private int score = 0;
-    private int lan = 0;
-    private int lat = 0;
+    private double lan = 0;
+    private double lat = 0;
 
     public Score() {}
 
@@ -15,19 +15,19 @@ public class Score {
         this.score = score;
     }
 
-    public int getLan() {
+    public double getLan() {
         return lan;
     }
 
-    public void setLan(int lan) {
+    public void setLan(double lan) {
         this.lan = lan;
     }
 
-    public int getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(int lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
     @Override
