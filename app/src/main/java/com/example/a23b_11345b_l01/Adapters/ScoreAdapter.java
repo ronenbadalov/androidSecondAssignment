@@ -32,10 +32,9 @@ public ScoreAdapter(Context context, ArrayList<Score> scores,ScoreCallback score
 @NonNull
 @Override
 public ScoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("passed VT:", "" + viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.score_item, parent, false);
-        ScoreViewHolder movieViewHolder = new ScoreViewHolder(view);
-        return movieViewHolder;
+        ScoreViewHolder scoreViewHolder = new ScoreViewHolder(view);
+        return scoreViewHolder;
         }
 
 @Override

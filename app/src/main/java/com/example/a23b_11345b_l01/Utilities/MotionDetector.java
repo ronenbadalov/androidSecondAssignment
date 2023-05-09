@@ -16,14 +16,12 @@ public class MotionDetector {
 
     private MotionCallback motionCallback;
 
-    private int stepCounterX = 0;
-    private int stepCounterY = 0;
     private long timestamp = 0;
 
+    private int currentLane = 0;
     private SensorEventListener sensorEventListener;
 
     public MotionDetector(Context context, MotionCallback motionCallback) {
-        Log.d("in","innnnnnnnnnn");
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         this.motionCallback = motionCallback;
@@ -35,10 +33,7 @@ public class MotionDetector {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 float x = event.values[0];
-                float y = event.values[1];
-                Log.d("x",""+x);
-                Log.d("y",""+y);
-                calculateStep(x, y);
+                calcCurrentLane(x);
             }
 
             @Override
@@ -50,28 +45,45 @@ public class MotionDetector {
         };
     }
 
-    private void calculateStep(float x, float y) {
+    private void calcCurrentLane(float x) {
         if (System.currentTimeMillis() - timestamp > 500) {
             timestamp = System.currentTimeMillis();
-            if (x > 6.0) {
-                stepCounterX++;
-                if (motionCallback != null)
+            if (x > 2.5 ) {
+                if (motionCallback != null){
+                    currentLane = 0;
                     motionCallback.moveX();
+                }
             }
-            if (y > 6.0) {
-                stepCounterY++;
-                if (motionCallback != null)
-                    motionCallback.moveY();
+            if (x <= 4.5 && x > 1.5 ) {
+                if (motionCallback != null){
+                    currentLane = 1;
+                    motionCallback.moveX();
+                }
             }
+            if (x < 1.5 && x > -1.5 ) {
+                if (motionCallback != null){
+                    currentLane = 2;
+                    motionCallback.moveX();
+                }
+            }
+            if (x <= -1.5 && x > -4.5 ) {
+                if (motionCallback != null){
+                    currentLane = 3;
+                    motionCallback.moveX();
+                }
+            }
+            if (x <= -4.5  ) {
+                if (motionCallback != null){
+                    currentLane = 4;
+                    motionCallback.moveX();
+                }
+            }
+
         }
     }
 
-    public int getStepsX() {
-        return stepCounterX;
-    }
-
-    public int getStepsY() {
-        return stepCounterY;
+    public int getCurrentLane() {
+        return currentLane;
     }
 
     public void start() {

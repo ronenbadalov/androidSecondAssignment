@@ -47,7 +47,6 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        Log.d("test","in list");
         findViews(view);
         initViews(view);
         return view;
@@ -87,7 +86,6 @@ public class ListFragment extends Fragment {
         scoreAdapter = new ScoreAdapter(getActivity(),scores,clickScoreItemCallback);
         String scoreListJson = new Gson().toJson(scorelistFromJson);
         MySP3.getInstance().putString("score-list", scoreListJson);
-        Log.d("From JSON", scoreListJson.toString());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         list_LST_scores.setLayoutManager(linearLayoutManager);

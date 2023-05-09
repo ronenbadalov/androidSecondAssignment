@@ -41,25 +41,24 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_IS_SENSOR = "KEY_IS_SENSOR";
     public static final String KEY_LOCATION = "KEY_LOCATION";
 
+    private boolean isSensorMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent previousIntent = getIntent();
         obstacleProgressIntervalMS = previousIntent.getBooleanExtra(KEY_NORMAL_SPEED,true) ? 1000 : 500;
-        boolean isSensorMode = previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
-        Log.d("isSensor",""+isSensorMode);
-        if(isSensorMode){
-            initStepDetector();
-        }
-        currentLocation = previousIntent.getParcelableExtra(KEY_LOCATION);
-
+        isSensorMode = previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         ObstacleProgressHandler = new Handler();
         findViews();
 
         gameManager = new GameManager(main_IMG_hearts.length);
         hideObstaclesAndCoins();
+
+        currentLocation = previousIntent.getParcelableExtra(KEY_LOCATION);
+
         refreshUI();
         setNavButtonsClickListeners();
         initRunnable();
@@ -68,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         hitSound.setVolume(1.0f,1.0f);
         coinSound = MediaPlayer.create(this,R.raw.wow);
         coinSound.setVolume(1.0f,1.0f);
+
+        if(isSensorMode){
+            hideButons();
+            initStepDetector();
+        }
     }
 
     private void hideObstaclesAndCoins(){
@@ -80,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshUI() {
         if(gameManager.isLose()){
+            if(isSensorMode) motionDetector.stop();
             clearObstacleProgress();
             openScoreBoard();
+
         }
         int[][] currBoardState = gameManager.getBoardState();
         for(int i = 0; i < gameManager.getRows();i++) {
@@ -180,26 +186,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         clearObstacleProgress();
+        if(isSensorMode)  motionDetector.stop();
     }
 
     private void initStepDetector() {
         motionDetector = new MotionDetector(this, new MotionCallback() {
             @Override
             public void moveX() {
-                Log.d("x",""+motionDetector.getStepsX());
+                int newCarLane = motionDetector.getCurrentLane();
+                if(newCarLane != gameManager.getCarCurrentLane()){
+                    gameManager.setCarCurrentLane(newCarLane);
+                    refreshUI();
+                }
             }
-
-            @Override
-            public void moveY() {
-
-            }
-
-            @Override
-            public void moveZ() {
-            }
-
 
         });
+
+        motionDetector.start();
+    }
+
+    private void hideButons(){
+        for (MaterialButton mb: main_nav_BTNS) {
+            mb.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void obstacleProgress() {

@@ -36,7 +36,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Log.d("test","testtt");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -65,7 +64,6 @@ public class MenuActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.KEY_NORMAL_SPEED,isNormalSpeed);
         intent.putExtra(MainActivity.KEY_IS_SENSOR,isSensorMode);
         intent.putExtra(MainActivity.KEY_LOCATION,currentLocation);
-        Log.d("test",""+currentLocation);
         startActivity(intent);
         finish();
     }
@@ -107,7 +105,6 @@ public class MenuActivity extends AppCompatActivity {
                         public void onSuccess(Location location) {
                             if (location != null) {
                                 currentLocation = location;
-                                Log.d("test",""+location);
                             }
                         }
                     });
@@ -124,7 +121,6 @@ public class MenuActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("request code",""+requestCode);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 if (grantResults.length > 0
