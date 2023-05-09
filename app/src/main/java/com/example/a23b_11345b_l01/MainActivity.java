@@ -13,7 +13,9 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import com.bumptech.glide.Glide;
+import com.example.a23b_11345b_l01.Interfaces.MotionCallback;
 import com.example.a23b_11345b_l01.Logic.GameManager;
+import com.example.a23b_11345b_l01.Utilities.MotionDetector;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator v;
     private MediaPlayer hitSound;
     private MediaPlayer coinSound;
+    private MotionDetector motionDetector;
     private Location currentLocation;
     public static final String KEY_NORMAL_SPEED = "KEY_NORMAL_SPEED";
     public static final String KEY_IS_SENSOR = "KEY_IS_SENSOR";
@@ -44,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Intent previousIntent = getIntent();
         obstacleProgressIntervalMS = previousIntent.getBooleanExtra(KEY_NORMAL_SPEED,true) ? 1000 : 500;
-        previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
+        boolean isSensorMode = previousIntent.getBooleanExtra(KEY_IS_SENSOR,false);
+        Log.d("isSensor",""+isSensorMode);
+        if(isSensorMode){
+            initStepDetector();
+        }
         currentLocation = previousIntent.getParcelableExtra(KEY_LOCATION);
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -175,6 +182,26 @@ public class MainActivity extends AppCompatActivity {
         clearObstacleProgress();
     }
 
+    private void initStepDetector() {
+        motionDetector = new MotionDetector(this, new MotionCallback() {
+            @Override
+            public void moveX() {
+                Log.d("x",""+motionDetector.getStepsX());
+            }
+
+            @Override
+            public void moveY() {
+
+            }
+
+            @Override
+            public void moveZ() {
+            }
+
+
+        });
+    }
+
     private void obstacleProgress() {
         ObstacleProgressHandler.postDelayed(ObstacleProgressRunnable, obstacleProgressIntervalMS);
     }
@@ -195,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
     private void findViews() {
 
